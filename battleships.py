@@ -1,12 +1,16 @@
-"""A program to run a game of battleships that is one player with a single ship hidden in a user chosen
-grid. The player will have a set number of guesses to try to sink the ship """
+"""A program to run a game of battleships that should be a one player version with a single ship hidden in a 5x5
+grid. The player will have 10 guesses to try to sink the ship """
 
 # import the random integer function to place the battleship
 from random import randint
 from time import *
+import math
 
 # TODO statistics for each game - wins/losses
-# TODO print a list of previous guesses? - NO. Board is a record of that
+# TODO label game board
+# TODO Tutorial - separate file?
+# TODO Check guess calculations
+# TODO closeness clues
 
 
 class GameSetup:
@@ -19,6 +23,7 @@ class GameSetup:
         self.options = [1, 2, 3]
         self.user_difficulty = 0
         self.gamedifficulty = 0
+
 
 
     def game_welcome(self):
@@ -41,22 +46,25 @@ class GameSetup:
 
 
         if self.user_difficulty == 1:
-            self.gamedifficulty = self.user_size_choice * 2
+            self.gamedifficulty = int(math.ceil((self.user_size_choice ** 2) * 0.75))
+            print(self.gamedifficulty)
         elif self.user_difficulty == 2:
-            self.gamedifficulty = self.user_size_choice
+            self.gamedifficulty = int(math.ceil((self.user_size_choice ** 2) * 0.5))
+            print(self.gamedifficulty)
         else:
-            self.gamedifficulty = self.user_size_choice / 2
+            self.gamedifficulty = int(math.ceil((self.user_size_choice ** 2) * 0.25))
+            print(self.gamedifficulty)
 
 
     def valid_game_check(self):
         while True:
             try:
-                self.user_size_choice = int(input("First, pick your game board size. Select a number between 2 - 20: "))
-                while self.user_size_choice > 20 or self.user_size_choice < 2:
-                    self.user_size_choice = int(input("Oops! Please select a number between 2 - 20: "))
+                self.user_size_choice = int(input("First, pick your game board size. Select a number between 2 - 10: "))
+                while self.user_size_choice > 10 or self.user_size_choice < 2:
+                    self.user_size_choice = int(input("Oops! Please select a number between 2 - 10: "))
                 break
             except(ValueError):
-                print("Oops! Please select a number between 2 - 20: ")
+                print("Oops! Please select a number between 2 - 10: ")
 
     def board_size(self):
         # print(self.user_size_choice)
@@ -64,11 +72,13 @@ class GameSetup:
         self.ship_column = randint(0, self.user_size_choice - 1)
         # print(self.ship_row, self.ship_column)
         for i in range(0, self.user_size_choice):
+            # self.gameboard.append(str(i))
             self.gameboard.append([" o "] * self.user_size_choice)
 
     def print_board(self):
 
         print("\nYour board: ")
+        # print(self.gameboard)
         for row in self.gameboard:
             print(" ".join(row))
 
@@ -91,7 +101,6 @@ class TheGame:
                 break
             except(ValueError):
                 print("Oops! Please enter a number.")
-
 
 
     def run_game(self):
