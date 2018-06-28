@@ -4,6 +4,7 @@ grid. The player will have 10 guesses to try to sink the ship """
 # import the random integer function to place the battleship
 from random import randint
 from time import *
+import math
 
 # TODO statistics for each game - wins/losses
 # TODO label game board
@@ -45,11 +46,14 @@ class GameSetup:
 
 
         if self.user_difficulty == 1:
-            self.gamedifficulty = self.user_size_choice * 2
+            self.gamedifficulty = int(math.ceil((self.user_size_choice ** 2) * 0.75))
+            print(self.gamedifficulty)
         elif self.user_difficulty == 2:
-            self.gamedifficulty = self.user_size_choice
+            self.gamedifficulty = int(math.ceil((self.user_size_choice ** 2) * 0.5))
+            print(self.gamedifficulty)
         else:
-            self.gamedifficulty = self.user_size_choice / 2
+            self.gamedifficulty = int(math.ceil((self.user_size_choice ** 2) * 0.25))
+            print(self.gamedifficulty)
 
 
     def valid_game_check(self):
