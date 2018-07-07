@@ -67,10 +67,10 @@ class GameSetup:
                 print("Oops! Please select a number between 2 - 10: ")
 
     def board_size(self):
-        # print(self.user_size_choice)
+        # print(self.user_gameboard_size_choice)
         self.ship_row = randint(0, self.user_size_choice - 1)
         self.ship_column = randint(0, self.user_size_choice - 1)
-        # print(self.ship_row, self.ship_column)
+        # print(self.computer_battleship_row, self.computer_battleship_column)
         for i in range(0, self.user_size_choice):
             # self.gameboard.append(str(i))
             self.gameboard.append([" o "] * self.user_size_choice)

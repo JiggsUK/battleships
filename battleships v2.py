@@ -47,13 +47,13 @@ class GameSetup:
 
         if self.user_difficulty == 1:
             self.calculated_game_difficulty = int(math.ceil((self.user_size_choice ** 2) * 0.75))
-            # print(self.calculated_game_difficulty)
+            # print(self.calculated_number_of_turns)
         elif self.user_difficulty == 2:
             self.calculated_game_difficulty = int(math.ceil((self.user_size_choice ** 2) * 0.5))
-            # print(self.calculated_game_difficulty)
+            # print(self.calculated_number_of_turns)
         else:
             self.calculated_game_difficulty = int(math.ceil((self.user_size_choice ** 2) * 0.25))
-            # print(self.calculated_game_difficulty)
+            # print(self.calculated_number_of_turns)
 
 
     def valid_game_check(self):
@@ -69,7 +69,7 @@ class GameSetup:
     def board_size(self):
         self.ship_row = randint(1, self.user_size_choice - 1)
         self.ship_column = randint(1, self.user_size_choice - 1)
-        # print(self.ship_row, self.ship_column)
+        # print(self.computer_battleship_row, self.computer_battleship_column)
 
         # print(self.gameboard)
         for i in range(0, self.user_size_choice):
