@@ -9,7 +9,6 @@ import math
 
 # TODO statistics for each game - wins/losses
 # TODO closeness clues
-# TODO computer battleship row needs converting to display at the end
 
 
 class GameSetup:
@@ -22,15 +21,14 @@ class GameSetup:
         self.calculated_number_of_turns = 0
         self.flattened_gameboard_build = []
         self.build_gameboard = []
-        self.numbers_to_letters_dictionary = {'1':'A', '2':'B', '3':'C', '4':'D', '5':'E', '6':'F', '7':'G', '8':'H', '9':'I', '10':'J'}
 
     def game_welcome(self):
         print("Welcome to Battleships!")
         print("Try to find the computers battleship before you run out of lives!")
         print("Let the games begin!\n")
-        setup.user_input_error_handling()
+        setup.valid_game_check()
 
-    def user_input_error_handling(self):
+    def valid_game_check(self):
         while True:
             try:
                 self.user_gameboard_size_choice = int(input("First, pick your game board size. Select a number between 2 - 10: "))
@@ -59,24 +57,15 @@ class GameSetup:
         else:
             self.calculated_number_of_turns = int(math.ceil((self.user_gameboard_size_choice ** 2) * 0.25))
 
-
-
-    def board_creation(self):
+    def board_size(self):
         for i in range(0, self.user_gameboard_size_choice):
             self.build_gameboard.append([str(i + 1)])
             self.build_gameboard[i].append(["O"] * self.user_gameboard_size_choice)
             self.flattened_gameboard_build = [item for sublist in self.build_gameboard for item in sublist]
 
         self.flattened_gameboard_build = [item for sublist in self.flattened_gameboard_build for item in sublist]
-
-        for i, num in enumerate(self.flattened_gameboard_build):
-            if num in self.numbers_to_letters_dictionary:
-                self.flattened_gameboard_build[i]  = self.numbers_to_letters_dictionary.get(num)
-
         self.gameboard = [self.flattened_gameboard_build[x:x + self.user_gameboard_size_choice + 1] for x in range(0, len(self.flattened_gameboard_build), self.user_gameboard_size_choice + 1)]
         self.gameboard.insert(0, list(range(0, self.user_gameboard_size_choice + 1)))
-
-
 
     def print_board(self):
         print("\nYour board: ")
@@ -86,55 +75,31 @@ class GameSetup:
 
 class TheGame:
     def __init__(self):
-        self.user_guess_row = ''
-        self.converted_user_guess_row = int()
+        self.user_guess_row = 0
         self.user_guess_col = 0
         self.turn = 1
         self.number_of_guesses = setup.calculated_number_of_turns
         self.computer_battleship_row = randint(1, setup.user_gameboard_size_choice - 1)
         self.computer_battleship_column = randint(1, setup.user_gameboard_size_choice - 1)
-        self.converted_computer_battleship_row = ''
-
-    def user_guesses(self):
-        game.input_validity_checks()
 
     def input_validity_checks(self):
-
-        try:
-            self.user_guess_row = str(input("\nGuess Row: "))
-            self.user_guess_row = self.user_guess_row.upper()
-
-            if self.user_guess_row.isalpha() == False:
-                raise NameError
-
-            self.user_guess_col = int(input("Guess Column: "))
-            if self.user_guess_col not in range(1, setup.user_gameboard_size_choice + 1):
-                raise ValueError
-        except(NameError):
-            print("Oops! Please enter a row letter.")
-            game.user_guesses()
-        except(ValueError):
-            print("Oops! Please enter a number.")
-            game.user_guesses()
+        while True:
+            try:
+                self.user_guess_row = int(input("\nGuess Row: "))
+                self.user_guess_col = int(input("Guess Column: "))
+                break
+            except(ValueError):
+                print("Oops! Please enter a number.")
 
     def run_game(self):
         while self.turn <= self.number_of_guesses:
             print("\n----------------")
             print("\nTurn", (self.turn))
             setup.print_board()
-            game.user_guesses()
-
-            for k,v in setup.numbers_to_letters_dictionary.items():
-                if v in self.user_guess_row:
-                    self.converted_user_guess_row = int(k)
-                if k in str(self.computer_battleship_row):
-                    self.converted_computer_battleship_row = str(v)
-
-
-
+            game.input_validity_checks()
 
             # if statement to stop if battleship is sunk; breaks loop if triggered
-            if self.converted_user_guess_row == self.computer_battleship_row and self.user_guess_col == self.computer_battleship_column:
+            if self.user_guess_row == self.computer_battleship_row and self.user_guess_col == self.computer_battleship_column:
                 print("\nCongratulations! You sank my battleship!")
                 setup.gameboard[self.computer_battleship_row][self.computer_battleship_column] = "B"
                 setup.print_board()
@@ -142,17 +107,17 @@ class TheGame:
 
             # else statements for other scenarios
             else:
-                if self.converted_user_guess_row not in range(0, setup.user_gameboard_size_choice + 1) or self.user_guess_col not in range(0, setup.user_gameboard_size_choice + 1):
+                if self.user_guess_row not in range(0, setup.user_gameboard_size_choice + 1) or self.user_guess_col not in range(0, setup.user_gameboard_size_choice + 1):
                     print("\nOops, that's not even in the ocean.")
                     self.turn = self.turn - 1
-                elif setup.gameboard[self.converted_user_guess_row][self.user_guess_col] == "X":
+                elif setup.gameboard[self.user_guess_row][self.user_guess_col] == "X":
                     print("You guessed that one already.")
                     self.turn = self.turn - 1
                 else:
                     print("\nYou missed my battleship!")
-                    setup.gameboard[self.converted_user_guess_row][self.user_guess_col] = "X"
+                    setup.gameboard[self.user_guess_row][self.user_guess_col] = "X"
                 if self.turn == self.number_of_guesses:
-                    print("\nGame Over! \n" + "My battleship was in: " + str(self.converted_computer_battleship_row) + str(self.computer_battleship_column))
+                    print("\nGame Over! \n" + "My battleship was in row: " + str(self.computer_battleship_row + 1) + " and column: " + str(self.computer_battleship_column + 1))
                     setup.gameboard[self.computer_battleship_row][self.computer_battleship_column] = "B"
                     setup.print_board()
                     break
@@ -163,7 +128,7 @@ while True:
     setup = GameSetup()
     setup.game_welcome()
     setup.game_difficulty()
-    setup.board_creation()
+    setup.board_size()
 
     game = TheGame()
     game.run_game()
