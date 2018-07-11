@@ -59,8 +59,6 @@ class GameSetup:
         else:
             self.calculated_number_of_turns = int(math.ceil((self.user_gameboard_size_choice ** 2) * 0.25))
 
-
-
     def board_creation(self):
         for i in range(0, self.user_gameboard_size_choice):
             self.build_gameboard.append([str(i + 1)])
@@ -75,8 +73,6 @@ class GameSetup:
 
         self.gameboard = [self.flattened_gameboard_build[x:x + self.user_gameboard_size_choice + 1] for x in range(0, len(self.flattened_gameboard_build), self.user_gameboard_size_choice + 1)]
         self.gameboard.insert(0, list(range(0, self.user_gameboard_size_choice + 1)))
-
-
 
     def print_board(self):
         print("\nYour board: ")
@@ -129,10 +125,7 @@ class TheGame:
                     self.converted_user_guess_row = int(k)
                 if k in str(self.computer_battleship_row):
                     self.converted_computer_battleship_row = str(v)
-
-
-
-
+                    
             # if statement to stop if battleship is sunk; breaks loop if triggered
             if self.converted_user_guess_row == self.computer_battleship_row and self.user_guess_col == self.computer_battleship_column:
                 print("\nCongratulations! You sank my battleship!")
