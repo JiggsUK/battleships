@@ -116,7 +116,7 @@ class TheGame:
     def run_game(self):
         while self.turn <= self.number_of_guesses:
             print("\n----------------")
-            print("\nTurn {} of {}".format(self.turn, self.number_of_guesses))
+            print("\nTurn", (self.turn))
             setup.print_board()
             game.user_guesses()
 
